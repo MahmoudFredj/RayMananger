@@ -15,8 +15,9 @@ app.use(express.json({ limit: '64mb' }));
 
 // connection Mongoose
 
+const dbUrl = devDB;
 mongoose
-    .connect(devDB, {
+    .connect(dbUrl, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
     })
