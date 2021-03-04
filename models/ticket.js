@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Joi = require('joi');
 
-const projectSchema = new mongoose.Schema({
+const ticketSchema = mongoose.Schema({
     name: String,
     description: String,
     finished: {
@@ -10,23 +10,22 @@ const projectSchema = new mongoose.Schema({
     },
     createdDate: {
         type: Date,
-        default: Date.now
+        default: Date.now,
     },
     startDate: Date,
     expectedEndDate: Date,
-    acutalEndDate: Date,
+    actualEndDate: Date
 });
-
 
 const validationSchema = Joi.object({
     name: Joi.string().min(3).max(50).required(),
-    description: Joi.string().min(3).max(1024).required(),
+    description: Joi.string().min(3).max(1024).required()
 });
 
-const validate = (project) => validationSchema.validate(project);
-const Project = mongoose.model('project', projectSchema);
+const validate = (ticket) => validationSchema.validate(ticket);
+const Ticket = mongoose.model('ticket', ticketSchema);
 
 module.exports = {
-    Project,
+    Ticket,
     validate
 }
