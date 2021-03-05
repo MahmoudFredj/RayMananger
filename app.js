@@ -1,9 +1,8 @@
 const express = require('express');
 const app = express();
-const mongoose = require('mongoose');
 const accessControl = require('./middlewares/accessControl.js');
 const { devDB, liveDB } = require('./config.json');
-
+const DbAccess = require('./Module/DataAccessLayer/dbAccess.js');
 app.use(accessControl);
 app.use(express.json({ limit: '64mb' }));
 
@@ -16,28 +15,16 @@ app.use(express.json({ limit: '64mb' }));
 // connection Mongoose
 
 const dbUrl = devDB;
-mongoose
-    .connect(dbUrl, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    })
-    .then(
-        () =>
-            console.log(
-                '\x1b[32m',
-                `[mongoose] db connected on ${dbUrl} ...`,
-                '\x1b[37m',
-            ),
-        mongoose.set('useFindAndModify', false),
-    )
-    .catch((err) =>
-        console.log(
-            '\x1b[31m',
-            '[mongoose] db connection error :',
-            err,
-            '\x1b[37m',
-        ),
-    )
+DbAccess.connect(devDB);
+
+const dba = new DbAccess();
+dba.offlineOperation("select * from project").then((msg) => {
+    console.log(msg);
+}).catch(
+    (err) => {
+        console.log(err);
+    }
+)
 
 const PORT = process.env.PORT || 2424;
 app.listen(PORT, () => {
