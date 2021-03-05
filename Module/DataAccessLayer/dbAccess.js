@@ -7,10 +7,10 @@ class DbAccess {
         const connection = DbAccess.connection;
         return new Promise((resolve, reject) => {
             connection.connect((err) => {
-                if (err) { reject(err); connection.end(); }
+                if (err) { reject(err); connection.end(); return; }
             });
             connection.query(query, (err, result, fields) => {
-                if (err) { reject(err); connection.end(); }
+                if (err) { reject(err); connection.end(); return; }
                 resolve(result);
                 connection.end();
             });
@@ -22,10 +22,10 @@ class DbAccess {
         const connection = DbAccess.connection;
         return new Promise((resolve, reject) => {
             connection.connect((err) => {
-                if (err) { reject(err); connection.end(); }
+                if (err) { reject(err); connection.end(); return; }
             });
             connection.query(query, values, (err, result, fields) => {
-                if (err) { reject(err); connection.end(); }
+                if (err) { reject(err); connection.end(); return; }
                 resolve(result);
                 connection.end();
             });
