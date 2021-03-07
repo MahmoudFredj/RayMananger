@@ -86,6 +86,19 @@ class QueryManager extends DbAccess {
         }
     }
 
+    delete = async (filter) => {
+        try {
+            const parsedFilters = customeParse(filter);
+            const filterSets = operationParseKeysToString(parsedFilters.keys, 'and');
+            let query = `delete ${this.tableName} where ${filterSets}`;
+            const result = await this.onlineOperation(query, parsedFilters.values);
+            return result;
+
+        } catch (e) {
+            return false;
+        }
+    }
+
 }
 
 module.exports = QueryManager;
